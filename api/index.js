@@ -15,7 +15,7 @@ mongoose.connect(process.env.MONGO)
 // we use .env file because if we paste the url of mongodb it will show the password
 const app = express();
 
-app.use(express.json())
+app.use(express.json())             //used to get json data 
 
 app.listen(3000,()=>{
     console.log('listening on port 3000!');
@@ -23,3 +23,13 @@ app.listen(3000,()=>{
 
 app.use('/api/user',userRoutes)
 app.use('/api/auth',authRoutes)
+
+app.use((err,req,res,next)=>{
+    const statusCode =  500;
+    const message = res.statusMessage || 'Internal Server Error';
+    return res.status(statusCode).json({
+        success: false,
+        message,
+        statusCode
+    })
+})
